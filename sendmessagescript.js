@@ -26,7 +26,7 @@ function submitReservation(event) {
     console.log("Sending reservation data:", data); // Log the data for debugging
 
     // Send the data to Google Apps Script
-    fetch("https://script.google.com/macros/s/AKfycbw8_DbXTw7vgU9nRG4driTMEme3cvMoZVWkVr5Q7cGJ1x9I7Ok6-aCwHD86GTqtGc1KUA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxEs0Y5wUrMQdotqeYRci9HF4nOoaFIM3hhCKPLq854txOwvYPG3_Lrthse9Yux_7ex4g/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
