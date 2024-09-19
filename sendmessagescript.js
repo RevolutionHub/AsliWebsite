@@ -9,7 +9,7 @@ document.getElementById('reservationForm').addEventListener('submit', function(e
         return; // Stop form submission if the time field is empty
     }
 
-    fetch('https://script.google.com/macros/s/AKfycbwgKtb6PDZaBqrMZ0wOH0VKOkCFnugrqtZ1N7LCbV0-9-udd2LPVdiwYGZnJ3ha8_ZFgg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwgFoDcvAddBAy1a6Nu_mFCwmbtCQaN4DMH6RQVTrKNyHI5Iw2U-QWeIjq7zyQSM8Lbdw/exec', {
         method: 'POST',
         mode: 'no-cors',  // This disables CORS checks
         body: formData
