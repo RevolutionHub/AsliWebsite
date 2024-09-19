@@ -3,20 +3,12 @@ document.getElementById('reservationForm').addEventListener('submit', function(e
 
     var formData = new FormData(this);
 
-    var data = {};
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-
     fetch('https://script.google.com/macros/s/AKfycbyCFBFt_mTvQUqDGpsz8E9jpy5-7YfH285slB-SFf1mV80aUffuBm97IsZq24-bsnUwrA/exec', {
         method: 'POST',
         mode: 'no-cors',  // This disables CORS checks
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        body: formData
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
         if (data.status === 'success') {
             alert('Reservation successfully submitted!');
