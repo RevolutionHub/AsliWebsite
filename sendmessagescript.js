@@ -28,6 +28,7 @@ function submitReservation(event) {
     // Send the data to Google Apps Script
     fetch("https://script.google.com/macros/s/AKfycbxEs0Y5wUrMQdotqeYRci9HF4nOoaFIM3hhCKPLq854txOwvYPG3_Lrthse9Yux_7ex4g/exec", {
         method: "POST",
+        mode: 'no-cors',  // This disables CORS checks
         headers: {
             "Content-Type": "application/json"
         },
