@@ -36,10 +36,6 @@ function submitReservation(event) {
     })
     .then(response => {
         console.log("Raw response:", response); // Log the raw response for debugging
-
-        if (!response.ok) {
-            throw new Error("Network response was not ok: " + response.statusText);
-        }
         return response.json(); // Parse the response as JSON
     })
     .then(result => {
