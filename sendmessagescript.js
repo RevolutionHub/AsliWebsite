@@ -6,6 +6,7 @@ document.getElementById('reservationForm').addEventListener('submit', function(e
     // Send the data to Google Apps Script
     fetch("https://script.google.com/macros/s/AKfycbzCjontu46gnumcf3y_R9Z0EDmxadnBLdBQluNe3XviWiYQafgk14nD2jqd3lcBitrwOg/exec", {
         method: "POST",
+        mode: 'no-cors',  // This disables CORS checks
         body: formData
     })
     .then(response => {
