@@ -1,4 +1,4 @@
-function submitReservation(event) {
+document.getElementById('reservationForm').addEventListener('submit', function(event)  {
     event.preventDefault(); // Prevent form from reloading the page
 
     var formData = new FormData(this);
@@ -23,4 +23,4 @@ function submitReservation(event) {
         console.error("Error occurred during reservation submission:", error);
         alert("There was an error submitting your reservation. Please try again.");
     });
-}
+});
