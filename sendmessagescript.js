@@ -1,27 +1,25 @@
-document.getElementById('reservationForm').addEventListener('submit', function(event)  {
-    event.preventDefault(); // Prevent form from reloading the page
+// Reservation form submission
+document.getElementById('reservationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
 
-    var formData = new FormData(this);
+    var formData = new FormData(this); // Collect form data
 
-    // Send the data to Google Apps Script
-    fetch("https://script.google.com/macros/s/AKfycbzCjontu46gnumcf3y_R9Z0EDmxadnBLdBQluNe3XviWiYQafgk14nD2jqd3lcBitrwOg/exec", {
-        method: "POST",
-        mode: 'no-cors',  // This disables CORS checks
+    // Send the form data to Google Apps Script using fetch
+    fetch('https://script.google.com/macros/s/AKfycbyCFBFt_mTvQUqDGpsz8E9jpy5-7YfH285slB-SFf1mV80aUffuBm97IsZq24-bsnUwrA/exec', {
+        method: 'POST',
         body: formData
     })
-    .then(response => {
-        console.log("Raw response:", response); // Log the raw response for debugging
-    })
-    .then(result => {
-        if (result.status === "success") {
-            alert("Reservation successfully submitted!");   
-            document.getElementById("reservationForm").reset();  // Clear the form after success
-        } else {
-            alert("There was an error submitting your reservation: " + result.message);
-        }
+    .then(response => response.text()) // Use response.text() to handle plain text response
+    .then(data => {
+        // Display a success message
+       // document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('reservationForm').reset(); // Clear the form after success
+        
+        // Optionally, hide or reset any other elements if needed
+        // Example: Reset form UI or show success animations
     })
     .catch(error => {
-        console.error("Error occurred during reservation submission:", error);
+        console.error('Error occurred during reservation submission:', error);
         alert("There was an error submitting your reservation. Please try again.");
     });
 });
