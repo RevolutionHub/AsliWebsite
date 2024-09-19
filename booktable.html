@@ -52,7 +52,7 @@
                 <!-- Form content -->
                 <div class="form-container">
                     <h2>Book VIP Table</h2>
-                    <form id="reservationForm" action="https://script.google.com/macros/s/AKfycbyCFBFt_mTvQUqDGpsz8E9jpy5-7YfH285slB-SFf1mV80aUffuBm97IsZq24-bsnUwrA/exec" method="POST">
+                    <form id="reservationForm" action="https://script.google.com/macros/s/AKfycbwgndg89OVCGqK0mwdPcXop-fo-kMxTD34vc3IrZCffHjUCEkgKtpF_JSu58EjNtbd4nw/exec" method="POST">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" placeholder="Enter Name" required>
                     
@@ -75,6 +75,13 @@
                     
                         <button type="submit">Book</button>
                     </form>
+                    <div id="successMessage" class="successMessage" style=" display: none;
+                margin-top: 20px;
+                padding: 10px;
+                color: #5271ff;">
+                    Your quote request has been submitted successfully!
+	           </div>
+
                     
                 </div>
             </div>
