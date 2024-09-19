@@ -1,26 +1,30 @@
-// Reservation form submission
 document.getElementById('reservationForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
-    var formData = new FormData(this); // Collect form data
+    var formData = new FormData(this);
 
-    // Send the form data to Google Apps Script using fetch
+    var data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
     fetch('https://script.google.com/macros/s/AKfycbyCFBFt_mTvQUqDGpsz8E9jpy5-7YfH285slB-SFf1mV80aUffuBm97IsZq24-bsnUwrA/exec', {
         method: 'POST',
         mode: 'no-cors',  // This disables CORS checks
-        body: formData
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
-    .then(response => response.text()) // Use response.text() to handle plain text response
+    .then(response => response.json())
     .then(data => {
-        // Display a success message
-       // document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('reservationForm').reset(); // Clear the form after success
-        
-        // Optionally, hide or reset any other elements if needed
-        // Example: Reset form UI or show success animations
+        if (data.status === 'success') {
+            alert('Reservation successfully submitted!');
+        } else {
+            alert('There was an error submitting your reservation.');
+        }
     })
     .catch(error => {
-        console.error('Error occurred during reservation submission:', error);
-        alert("There was an error submitting your reservation. Please try again.");
+        console.error('Error:', error);
     });
 });
