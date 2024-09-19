@@ -54,28 +54,28 @@
                     <h2>Book VIP Table</h2>
                     <form id="reservationForm" action="https://script.google.com/macros/s/AKfycbyCFBFt_mTvQUqDGpsz8E9jpy5-7YfH285slB-SFf1mV80aUffuBm97IsZq24-bsnUwrA/exec" method="POST">
                         <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Enter Name">
-                        
+                        <input type="text" id="name" name="name" placeholder="Enter Name" required>
+                    
                         <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter Email Address">
-                        
+                        <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
+                    
                         <label for="phone">Phone</label>
-                        <input type="text" id="phone" placeholder="Enter Phone Number">
-
+                        <input type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                    
                         <label for="date">Date</label>
-                        <input type="text" id="date" placeholder="Select Date">
-
-                                               
+                        <input type="text" id="date" name="date" placeholder="Select Date" required>
+                    
                         <label for="time">Time</label>
-                        <input type="hidden" id="time">
-
+                        <input type="hidden" id="time" name="time">
+                    
                         <div id="time-slots"></div>
-
+                    
                         <label for="guests">Enter Number of Guests</label>
-                        <input type="text" id="guests" placeholder="Enter Number of Guests">
-
+                        <input type="text" id="guests" name="guests" placeholder="Enter Number of Guests" required>
+                    
                         <button type="submit">Book</button>
                     </form>
+                    
                 </div>
             </div>
         </section>
