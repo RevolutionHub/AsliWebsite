@@ -1,48 +1,19 @@
 function submitReservation(event) {
     event.preventDefault(); // Prevent form from reloading the page
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const guests = document.getElementById("guests").value;
-
-    // Ensure all required fields are filled
-    if (!name || !email || !phone || !date || !time || !guests) {
-        alert("Please fill out all fields.");
-        return;
-    }
-
-    const data = {
-        name: name,
-        email: email,
-        phone: phone,
-        date: date,
-        time: time,
-        guests: guests
-    };
-
-    console.log("Sending reservation data:", data); // Log the data for debugging
+    var formData = new FormData(this);
 
     // Send the data to Google Apps Script
-    fetch("https://script.google.com/macros/s/AKfycbxEs0Y5wUrMQdotqeYRci9HF4nOoaFIM3hhCKPLq854txOwvYPG3_Lrthse9Yux_7ex4g/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzCjontu46gnumcf3y_R9Z0EDmxadnBLdBQluNe3XviWiYQafgk14nD2jqd3lcBitrwOg/exec", {
         method: "POST",
-        mode: 'no-cors',  // This disables CORS checks
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        body: formData
     })
     .then(response => {
         console.log("Raw response:", response); // Log the raw response for debugging
-        return response.json(); // Parse the response as JSON
     })
     .then(result => {
-        console.log("Parsed JSON result:", result); // Log the parsed result
-
         if (result.status === "success") {
-            alert("Reservation successfully submitted!");
+            alert("Reservation successfully submitted!");   
             document.getElementById("reservationForm").reset();  // Clear the form after success
         } else {
             alert("There was an error submitting your reservation: " + result.message);
