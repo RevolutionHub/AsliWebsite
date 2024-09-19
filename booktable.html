@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asli Bar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Include Flatpickr JS -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+</head>
+<body>
+    <div class="header-hero-container onlyheight">
+        <!-- Background Video -->
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="images/background-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    
+        <!-- Header Section -->
+        <header class="header-section">
+            <div class="header-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="Logo" id="logoGif">
+                    </a>
+                </div>
+                <!-- Navigation -->
+                <nav>
+                    <div class="menu-toggle" id="mobile-menu">
+                        <i class="fas fa-stream navbar-toggler-icon"></i>
+                     </div>
+                     <ul class="nav-menu">
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#menu">Menu</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                        <a href="booktable.html" class="cta-button booktable">Book VIP Table</a>
+                    </ul>
+                </nav>
+                <a href="tel:022-588-9003" class="cta-button">Call Now</a>
+            </div>
+        </header>
+
+        <section class="event-section">
+            <div class="event-container">
+                <!-- Form content -->
+                <div class="form-container">
+                    <h2>Book VIP Table</h2>
+                    <form id="reservationForm" onsubmit="submitReservation(event)">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter Name">
+                        
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter Email Address">
+                        
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" placeholder="Enter Phone Number">
+
+                        <label for="date">Date</label>
+                        <input type="text" id="date" placeholder="Select Date">
+
+                                               
+                        <label for="party-time">Time</label>
+                        <input type="hidden" id="party-time">
+
+                        <div id="time-slots"></div>
+
+                        <label for="guests">Enter Number of Guests</label>
+                        <input type="text" id="guests" placeholder="Enter Number of Guests">
+
+                        <button type="submit">Book</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer footerbgcolor" id="contact">
+        <div class="footer-container">
+            <div class="footer-column site-title">
+                <img class="contact-logo" src="images/logo.png">
+            </div>
+            <div class="footer-column explore-follow">
+                <div class="explore">
+                    <h2>Contact Us</h2>
+                    <p>Email: yalalounge@hotmail.com</p>
+                    <p>Call us: +64 22 588 9003</p>
+                </div>
+                <div class="follow-us">
+                    <h3>Follow Us</h3>
+                    <div class="contact-icons">
+                        <a href="https://www.instagram.com/yala_lounge?igsh=ODA4MnVkMTI4cHBm"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="contact-button">
+                    <a href="booktable.html" class="contact-book-button">Book VIP Table</a>  
+                </div>
+            </div>
+        </div>
+    </footer>
+
+   <script src="sendmessagescript.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <script>
+    const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbx7hOeZ4bhOViZqe_OzxEvGY0PbMG-9wQqRMm7lj0XpoGh8CY3B-_w-BjGAMH-EQ2YaHw/exec'; // Replace with your Google Apps Script URL
+  
+  $(function() {
+      // Initialize Datepicker
+      $("#date").datepicker({
+          dateFormat: "yy-mm-dd", // Use "yy-mm-dd" because that's how the script expects the date format
+          onSelect: function(dateText) {
+              loadAvailableTimes(dateText);
+          }
+      });
+      function loadAvailableTimes(date) {
+      $.ajax({
+          url: googleScriptUrl,
+          method: 'GET',
+          data: { date: date },
+          success: function(response) {
+              console.log("Raw response from Google Apps Script:", response);  // The response is already an array
+              
+              try {
+                  // Use the response directly as it's already an array
+                  const times = response;
+  
+                  const timeSlotsDiv = $("#time-slots");
+                  timeSlotsDiv.empty();  // Clear the previous time slots
+  
+                  if (times.length > 0) {
+                      // Add a container for flex display
+                      const timeRow = $("<div></div>").css({
+                          "display": "flex",  // Display times in a row
+                          "justify-content": "center",  // Center the time slots horizontally
+                          "gap": "10px"  // Add space between the boxes
+                      });
+  
+                      times.forEach(function(time) {
+                          const timeSlot = $("<div></div>")
+                              .addClass("time-slot")
+                              .text(time)
+                              .css({
+                                  "padding": "10px 20px",
+                                  "cursor": "pointer",
+                                  "background-color": "#FF2D55",
+                                  "text-align": "center",
+                                  "flex": "0 0 auto",  // Prevent shrinking of boxes
+                                  "width": "100px"  // Set a fixed width for each box
+                              })
+                              .hover(
+                                  function() { $(this).css("background-color", "#0084FF"); },  // Hover in
+                                  function() { $(this).css("background-color", "#0084FF"); }  // Hover out
+                              )
+                              .click(function() {
+                                  $(".time-slot").css({
+                                      "background-color": "#FF2D55",
+                                      "color": "black"
+                                  });  // Reset all time slots
+                                  $(this).css({
+                                      "background-color": "#0084FF",
+                                      "color": "white"
+                                  });  // Highlight the selected time slot
+                                  
+                                  $("#time").val(time);  // Set the selected time in the hidden field
+                              });
+  
+                          timeRow.append(timeSlot);  // Append each time slot to the timeRow container
+                      });
+  
+                      timeSlotsDiv.append(timeRow);  // Append the row of time slots to the time-slots div
+                  } else {
+                      timeSlotsDiv.append("<p>No available times for this date.</p>");
+                  }
+              } catch (error) {
+                  console.error("Error processing response:", error);
+                  // alert("Error fetching available times. Please try again.");
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error("AJAX Error - Status:", textStatus);
+              console.error("Error Thrown:", errorThrown);
+              console.error("Response Text:", jqXHR.responseText);
+  
+              // alert("Error fetching available times. Please try again.");
+          }
+      });
+  }
+  
+  
+  });
+  
+  
+     </script>
+
+  
+</body>
+</html>

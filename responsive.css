@@ -1,0 +1,188 @@
+
+
+/* Mobile screens (max-width: 768px) */
+@media (max-width: 768px) {
+    .header-hero-container {
+      height: 100vh;
+    }
+  
+    .hero-text h1 {
+      font-size: 95px; /* Slightly smaller for mobile screens */
+      height: 120px;
+    }
+  
+    .hero-text p {
+      font-size: 30px; /* Smaller paragraph font size */
+    }
+    .hero-content{
+      padding-top: 0px;
+    }
+  
+    .cta-button {
+      font-size: 10px; /* Smaller button text */
+      text-decoration: none;
+      background-color: #0000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .cta-button.booktable {
+      background-color: #000000;
+     }
+  
+    .header-container {
+      flex-direction: row;
+      padding: 10px;
+      gap:220px;
+    }
+  
+    .logo img {
+      max-width: 100px; /* Reduce logo size */
+    }
+  
+    .about-content h2, .menu-container h2, .services-section h2 {
+      font-size: 3rem; /* Reduce heading size */
+    }
+  
+    .about-content h1 {
+      font-size: 35px;
+  }
+
+    .about-content h3, .service h3 {
+      font-size: 1.8rem; /* Reduce subheading size */
+    }
+
+    .event-section{
+     display: block;
+    }
+  
+    .about-content p, .service p {
+      font-size: 1.2rem; /* Smaller paragraph text */
+    }
+
+    .contact-logo {
+      width: 140px;
+  }
+    .menu-container {
+       padding: 0px; 
+      color: #fff;
+      position: relative;
+       width: 100%;
+      padding-bottom: 100px;
+    }
+    .menu-container p{
+      font-size: 1.2rem;
+    }
+    .contact-icons {
+       text-align: left;
+     }
+
+    .menu-toggle {
+      display: block;
+      background: white;
+      color: black;
+      padding: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 24px;
+      z-index: 999;
+      position: relative;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+  
+    .onlyheight {
+      height: 100vh !important;
+    }
+    
+    .service img {
+      height: 200px; /* Reduce image size */
+    }
+  
+    .image-wrapper .gallery-image {
+      width: 250px;
+      height: 250px; /* Smaller gallery images for mobile */
+    }
+    .services-grid {
+        display: block;
+       justify-content: space-between;
+       gap: 10px!important; /* Ensure space between the cards */
+   }
+   .services-section{
+         padding: 0px 0;
+       
+   }
+
+   .nav-menu {
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+   .nav-menu.active {
+    display: flex;
+    width: 100vw; /* Make sure it spans the full width of the screen */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.nav-menu li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.nav-menu li a {
+  color: black;
+}
+
+.callnow{
+    display: none;
+}
+
+  .header-hero-container {
+    /* background-image: url('images/background-image.jpg'); Replace with your image */
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Adjust height to fit the screen */
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Ensure text stays visible */
+  }
+
+  .hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Full screen height */
+  }
+  .explore-follow {
+    display: flow;
+   
+  }
+  .footer-column {
+    margin-right: 0px;
+}
+.bg-hideshow{
+    display: block;
+  }
+  .bg-hideshowdesktop{
+    display: none;
+  }
+}
+  

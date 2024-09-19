@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="admin.css">
+  </head>
+  <body>
+    <h2>Pending Table Reservations</h2>
+    <div id="reservations"></div>
+    
+    <script>
+      function fetchReservations() {
+        google.script.run.withSuccessHandler(renderReservations).getPendingReservations();
+      }
+      
+      function renderReservations(reservations) {
+        var tableHTML = '<table><tr><th>Customer</th><th>Start Time</th><th>Description</th><th>Action</th></tr>';
+        
+        reservations.forEach(function(reservation) {
+          tableHTML += '<tr>';
+          tableHTML += '<td>' + reservation.title + '</td>';
+          tableHTML += '<td>' + new Date(reservation.startTime).toLocaleString() + '</td>';
+          tableHTML += '<td>' + reservation.description + '</td>';
+          tableHTML += '<td>';
+          tableHTML += '<button onclick="handleAction(\'' + reservation.id + '\', \'approve\')">Approve</button>';
+          tableHTML += '<button class="reject" onclick="handleAction(\'' + reservation.id + '\', \'reject\')">Reject</button>';
+          tableHTML += '</td>';
+          tableHTML += '</tr>';
+        });
+        
+        tableHTML += '</table>';
+        document.getElementById('reservations').innerHTML = tableHTML;
+      }
+      
+      function handleAction(eventId, action) {
+        google.script.run.withSuccessHandler(function(result) {
+          alert(result);
+          fetchReservations(); // Refresh reservations list
+        }).handlePostRequest({ eventId: eventId, action: action });
+      }
+      
+      fetchReservations(); // Load reservations on page load
+    </script>
+  </body>
+</html>
