@@ -316,7 +316,7 @@ nav ul li a {
   margin-bottom: 20px;
 }
 .explore-follow P{
-  color: white;
+  color: white!important;
   font-size: 1.1rem;
   margin-bottom: 20px;
 }
