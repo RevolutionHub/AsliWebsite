@@ -5,41 +5,47 @@
     <link rel="stylesheet" href="admin.css">
   </head>
   <body>
-    <h2>Pending Table Reservations</h2>
-    <div id="reservations"></div>
+    <div class="header">Admin Booking Dashboard</div>
+    <table id="bookingTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Guests</th>
+          <th>Submitted At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here dynamically -->
+      </tbody>
+    </table>
     
     <script>
-      function fetchReservations() {
-        google.script.run.withSuccessHandler(renderReservations).getPendingReservations();
+      // Fetch the booking data from Apps Script and populate the table
+      function fetchBookingData() {
+        google.script.run.withSuccessHandler(renderTable).getBookingData();
       }
-      
-      function renderReservations(reservations) {
-        var tableHTML = '<table><tr><th>Customer</th><th>Start Time</th><th>Description</th><th>Action</th></tr>';
-        
-        reservations.forEach(function(reservation) {
-          tableHTML += '<tr>';
-          tableHTML += '<td>' + reservation.title + '</td>';
-          tableHTML += '<td>' + new Date(reservation.startTime).toLocaleString() + '</td>';
-          tableHTML += '<td>' + reservation.description + '</td>';
-          tableHTML += '<td>';
-          tableHTML += '<button onclick="handleAction(\'' + reservation.id + '\', \'approve\')">Approve</button>';
-          tableHTML += '<button class="reject" onclick="handleAction(\'' + reservation.id + '\', \'reject\')">Reject</button>';
-          tableHTML += '</td>';
-          tableHTML += '</tr>';
+
+      // Render the table
+      function renderTable(bookingDetails) {
+        const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
+        bookingDetails.forEach(detail => {
+          const row = tableBody.insertRow();
+          row.insertCell(0).innerText = detail.name;
+          row.insertCell(1).innerText = detail.email;
+          row.insertCell(2).innerText = detail.phone;
+          row.insertCell(3).innerText = detail.date;
+          row.insertCell(4).innerText = detail.time;
+          row.insertCell(5).innerText = detail.guests;
+          row.insertCell(6).innerText = detail.currentDateTime;
         });
-        
-        tableHTML += '</table>';
-        document.getElementById('reservations').innerHTML = tableHTML;
       }
-      
-      function handleAction(eventId, action) {
-        google.script.run.withSuccessHandler(function(result) {
-          alert(result);
-          fetchReservations(); // Refresh reservations list
-        }).handlePostRequest({ eventId: eventId, action: action });
-      }
-      
-      fetchReservations(); // Load reservations on page load
+
+      // Load data when the page is loaded
+      window.onload = fetchBookingData;
     </script>
   </body>
 </html>
