@@ -117,96 +117,82 @@
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
    <script>
-    const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbx7hOeZ4bhOViZqe_OzxEvGY0PbMG-9wQqRMm7lj0XpoGh8CY3B-_w-BjGAMH-EQ2YaHw/exec'; // Replace with your Google Apps Script URL
+    const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbw78hEXrh2iguhB2oJufuoDFC4N4SLKtsZVjlLG5X8TeQ2cmr08gSy4jAWRyj8uFVXt2g/exec';  // Replace with your Google Apps Script URL
+    
+    $(function() {
+        // Initialize Datepicker
+        $("#date").datepicker({
+            dateFormat: "yy-mm-dd",  // Format that matches your sheet
+            onSelect: function(dateText) {
+                loadAvailableTimes(dateText);
+            }
+        });
   
-  $(function() {
-      // Initialize Datepicker
-      $("#date").datepicker({
-          dateFormat: "yy-mm-dd", // Use "yy-mm-dd" because that's how the script expects the date format
-          onSelect: function(dateText) {
-              loadAvailableTimes(dateText);
-          }
-      });
-      function loadAvailableTimes(date) {
-      $.ajax({
-          url: googleScriptUrl,
-          method: 'GET',
-          data: { date: date },
-          success: function(response) {
-              console.log("Raw response from Google Apps Script:", response);  // The response is already an array
-              
-              try {
-                  // Use the response directly as it's already an array
-                  const times = response;
+        function loadAvailableTimes(date) {
+            $.ajax({
+                url: googleScriptUrl,
+                method: 'GET',
+                data: { date: date },  // Send selected date to Google Apps Script
+                success: function(response) {
+                    console.log("Available times:", response);  // Log available times
+                    
+                    const timeSlotsDiv = $("#time-slots");
+                    timeSlotsDiv.empty();  // Clear previous time slots
   
-                  const timeSlotsDiv = $("#time-slots");
-                  timeSlotsDiv.empty();  // Clear the previous time slots
+                    if (response.length > 0) {
+                        const timeRow = $("<div></div>").css({
+                            "display": "flex",
+                            "justify-content": "center",
+                            "gap": "10px"
+                        });
   
-                  if (times.length > 0) {
-                      // Add a container for flex display
-                      const timeRow = $("<div></div>").css({
-                          "display": "flex",  // Display times in a row
-                          "justify-content": "center",  // Center the time slots horizontally
-                          "gap": "10px"  // Add space between the boxes
-                      });
+                        response.forEach(function(time) {
+                            const timeSlot = $("<div></div>")
+                                .addClass("time-slot")
+                                .text(time)
+                                .css({
+                                    "padding": "10px 20px",
+                                    "cursor": "pointer",
+                                    "background-color": "#FF2D55",
+                                    "text-align": "center",
+                                    "flex": "0 0 auto",
+                                    "width": "100px"
+                                })
+                                .hover(
+                                    function() { $(this).css("background-color", "#0084FF"); },
+                                    function() { $(this).css("background-color", "#FF2D55"); }
+                                )
+                                .click(function() {
+                                    $(".time-slot").css({
+                                        "background-color": "#FF2D55",
+                                        "color": "black"
+                                    });
+                                    $(this).css({
+                                        "background-color": "#0084FF",
+                                        "color": "white"
+                                    });
+                                    
+                                    $("#time").val(time);  // Set the selected time in the hidden field
+                                });
   
-                      times.forEach(function(time) {
-                          const timeSlot = $("<div></div>")
-                              .addClass("time-slot")
-                              .text(time)
-                              .css({
-                                  "padding": "10px 20px",
-                                  "cursor": "pointer",
-                                  "background-color": "#FF2D55",
-                                  "text-align": "center",
-                                  "flex": "0 0 auto",  // Prevent shrinking of boxes
-                                  "width": "100px"  // Set a fixed width for each box
-                              })
-                              .hover(
-                                  function() { $(this).css("background-color", "#0084FF"); },  // Hover in
-                                  function() { $(this).css("background-color", "#0084FF"); }  // Hover out
-                              )
-                              .click(function() {
-                                  $(".time-slot").css({
-                                      "background-color": "#FF2D55",
-                                      "color": "black"
-                                  });  // Reset all time slots
-                                  $(this).css({
-                                      "background-color": "#0084FF",
-                                      "color": "white"
-                                  });  // Highlight the selected time slot
-                                  
-                                  $("#time").val(time);  // Set the selected time in the hidden field
-                              });
+                            timeRow.append(timeSlot);  // Append each time slot to the timeRow container
+                        });
   
-                          timeRow.append(timeSlot);  // Append each time slot to the timeRow container
-                      });
+                        timeSlotsDiv.append(timeRow);  // Append the row of time slots to the time-slots div
+                    } else {
+                        timeSlotsDiv.append("<p>No available times for this date.</p>");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error - Status:", textStatus);
+                    console.error("Error Thrown:", errorThrown);
+                    console.error("Response Text:", jqXHR.responseText);
+                }
+            });
+        }
+    });
+  </script>
   
-                      timeSlotsDiv.append(timeRow);  // Append the row of time slots to the time-slots div
-                  } else {
-                      timeSlotsDiv.append("<p>No available times for this date.</p>");
-                  }
-              } catch (error) {
-                  console.error("Error processing response:", error);
-                  // alert("Error fetching available times. Please try again.");
-              }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-              console.error("AJAX Error - Status:", textStatus);
-              console.error("Error Thrown:", errorThrown);
-              console.error("Response Text:", jqXHR.responseText);
-  
-              // alert("Error fetching available times. Please try again.");
-          }
-      });
-  }
-  
-  
-  });
-  
-  
-     </script>
-
   
 </body>
 </html>
