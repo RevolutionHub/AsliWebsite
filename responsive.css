@@ -38,7 +38,7 @@
     }
   
     .logo img {
-      max-width: 120px; /* Reduce logo size */
+      max-width: 115px; /* Reduce logo size */
     }
   
     .about-content h2, .menu-container h2, .services-section h2 {
@@ -212,6 +212,19 @@ padding: 10px;
     max-width: 1450px;
     padding: 0 20px;
     text-align: center;
+}
+.form-container {
+   margin-top: 115px;
+  padding-bottom: 0px;
+}
+.services-section h2 {
+  text-align: center;
+  color: #0084FF;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-bottom: 5px solid white;
+  display: inline-block;
+  padding-bottom: 10px;
 }
 }
   
