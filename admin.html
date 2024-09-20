@@ -1,8 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top">
-    <link rel="stylesheet" href="admin.css">
+    <style>
+      /* Your CSS here */
+    </style>
+    <script>
+      function fetchBookingData() {
+        fetch('https://script.google.com/macros/s/AKfycbxqYDuIl-9aFJXJmq0QzshgDrSEg5h9_ghFvA2BpD8t4U39bvY0UkkoS1zE7eU5aFTy/exec')  // Replace with your deployed Web App URL
+          .then(response => response.json())
+          .then(data => {
+            const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';  // Clear the table before adding new data
+            data.forEach(detail => {
+              const row = tableBody.insertRow();
+              row.insertCell(0).innerText = detail.name;
+              row.insertCell(1).innerText = detail.email;
+              row.insertCell(2).innerText = detail.phone;
+              row.insertCell(3).innerText = detail.date;
+              row.insertCell(4).innerText = detail.time;
+              row.insertCell(5).innerText = detail.guests;
+              row.insertCell(6).innerText = detail.currentDateTime;
+            });
+          })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+    </script>
   </head>
   <body>
     <div class="header">Admin Booking Dashboard</div>
@@ -22,30 +44,7 @@
         <!-- Data will be inserted here dynamically -->
       </tbody>
     </table>
-    
-    <script>
-      // Fetch the booking data from Apps Script and populate the table
-      function fetchBookingData() {
-        google.script.run.withSuccessHandler(renderTable).getBookingData();
-      }
 
-      // Render the table
-      function renderTable(bookingDetails) {
-        const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
-        bookingDetails.forEach(detail => {
-          const row = tableBody.insertRow();
-          row.insertCell(0).innerText = detail.name;
-          row.insertCell(1).innerText = detail.email;
-          row.insertCell(2).innerText = detail.phone;
-          row.insertCell(3).innerText = detail.date;
-          row.insertCell(4).innerText = detail.time;
-          row.insertCell(5).innerText = detail.guests;
-          row.insertCell(6).innerText = detail.currentDateTime;
-        });
-      }
-
-      // Load data when the page is loaded
-      window.onload = fetchBookingData;
-    </script>
+    <button onclick="fetchBookingData()">Load Data</button>
   </body>
 </html>
