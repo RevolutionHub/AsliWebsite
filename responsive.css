@@ -38,11 +38,11 @@
     }
   
     .logo img {
-      max-width: 100px; /* Reduce logo size */
+      max-width: 120px; /* Reduce logo size */
     }
   
     .about-content h2, .menu-container h2, .services-section h2 {
-      font-size: 3rem; /* Reduce heading size */
+      font-size: 2.3rem; /* Reduce heading size */
     }
   
     .about-content h1 {
@@ -51,6 +51,7 @@
 
     .about-content h3, .service h3 {
       font-size: 1.8rem; /* Reduce subheading size */
+      text-align: center;
     }
 
    
@@ -67,7 +68,7 @@
       color: #fff;
       position: relative;
        width: 100%;
-      padding-bottom: 100px;
+      padding-bottom: 60px;
       text-align: center;
     }
     .menu-container p{
@@ -75,7 +76,7 @@
       text-align: left;
     }
     .contact-icons {
-       text-align: left;
+       text-align: center;
      }
 
     .menu-toggle {
@@ -101,7 +102,7 @@
     }
     
     .service img {
-      height: 200px; /* Reduce image size */
+      object-fit: fill;
     }
   
     .image-wrapper .gallery-image {
@@ -166,10 +167,11 @@
   }
 
   .hero-section {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     height: 100%; /* Full screen height */
+    margin-top: 290px;
   }
   .explore-follow {
     display: flow;
@@ -189,6 +191,7 @@ display: block;
   }
   .event-section{
 display: block;
+padding: 10px;
   }
   .booktable-section{
     display: flex;
@@ -196,5 +199,19 @@ display: block;
   .menu-container h2{
     text-align: center;
   }
+  .explore-menu{
+    margin-top: 24px;
+  }
+  .instagram-section h2{
+    font-size: 2.3rem;
+  }
+  .footer-container {
+    display: flow;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1450px;
+    padding: 0 20px;
+    text-align: center;
+}
 }
   
