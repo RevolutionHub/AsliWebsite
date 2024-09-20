@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
-  background-color: #FF2D55;
+  background: linear-gradient(135deg, #FF2D55, #0084FF);
 }
 table {
   width: 100%;
@@ -9,18 +9,18 @@ table {
   margin-bottom: 20px;
 }
 table, th, td {
-  border: 1px solid #FF2D55;
+  border: 1px solid #white;
 }
 th, td {
   padding: 12px;
   text-align: left;
 }
 th {
-  background-color: #FF2D55;
+  background-color: #white;
   color: white;
 }
 tr:nth-child(even) {
-  background-color: #FF2D55;
+  background-color: #white;
 }
 .header {
   font-size: 24px;
