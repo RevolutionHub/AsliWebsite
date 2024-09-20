@@ -2,33 +2,9 @@
 <html>
   <head>
     <style>
-      /* Your CSS here */
+      
     </style>
     <link rel="stylesheet" href="admin.css">
-    <script>
-      function fetchBookingData() {
-        fetch('https://script.google.com/macros/s/AKfycbxPuA2MhbqqojFUXdcha6OIUGn0e_SyFVy-3QBkVR5bbC5zRedQLEcPxPwGjQ07xbnT/exec', {
-          method: 'GET',
-          mode: 'no-cors',  // This prevents CORS issues but limits response visibility
-        })  // Replace with your deployed Web App URL
-          .then(response => response.json())
-          .then(data => {
-            const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';  // Clear the table before adding new data
-            data.forEach(detail => {
-              const row = tableBody.insertRow();
-              row.insertCell(0).innerText = detail.name;
-              row.insertCell(1).innerText = detail.email;
-              row.insertCell(2).innerText = detail.phone;
-              row.insertCell(3).innerText = detail.date;
-              row.insertCell(4).innerText = detail.time;
-              row.insertCell(5).innerText = detail.guests;
-              row.insertCell(6).innerText = detail.currentDateTime;
-            });
-          })
-          .catch(error => console.error('Error fetching data:', error));
-      }
-    </script>
   </head>
   <body>
     <div class="header">Admin Booking Dashboard</div>
@@ -50,5 +26,48 @@
     </table>
 
     <button onclick="fetchBookingData()">Load Data</button>
+
+    <script>
+      function fetchBookingData() {
+        fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
+          .then(response => {
+            // Check if the response is OK (status code 200-299)
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();  // Use text for debugging, to see the exact response
+          })
+          .then(data => {
+            try {
+              const jsonData = JSON.parse(data);  // Parse the JSON
+              
+              if (!jsonData || jsonData.length === 0) {
+                console.log("No data available");
+                return;
+              }
+              
+              const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
+              tableBody.innerHTML = '';  // Clear the table before adding new data
+              jsonData.forEach(detail => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerText = detail.name;
+                row.insertCell(1).innerText = detail.email;
+                row.insertCell(2).innerText = detail.phone;
+                row.insertCell(3).innerText = detail.date;
+                row.insertCell(4).innerText = detail.time;
+                row.insertCell(5).innerText = detail.guests;
+                row.insertCell(6).innerText = detail.currentDateTime;
+              });
+            } catch (e) {
+              console.error('Error parsing JSON:', e);
+              console.log('Raw response:', data);  // Log the raw response for debugging
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+            alert('Error loading data. Please check the console for details.');
+          });
+      }
+    </script>
   </body>
 </html>
