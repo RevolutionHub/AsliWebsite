@@ -5,8 +5,6 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <link rel="stylesheet" href="admin.css">
     <style>
-      /* Add your existing styles */
-      
       /* Calendar styling */
       #calendar {
         max-width: 900px;
@@ -25,15 +23,15 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background: linear-gradient(135deg, #FF2D55, #0084FF);
+        background: linear-gradient(135deg, #0084FF, #FF2D55);
       }
 
       .modal-content {
-        background: linear-gradient(135deg, #FF2D55, #0084FF);
+        background: linear-gradient(135deg, #FF2D55,  #0084FF);
         margin: auto;
         padding: 20px;
-        border: 1px solid linear-gradient(135deg, #FF2D55, #0084FF);
-                width: 80%;
+        border: 1px solid linear-gradient(135deg, #FF2D55,  #0084FF);
+        width: 80%;
         max-width: 600px;
       }
 
@@ -58,7 +56,7 @@
     <!-- Calendar container -->
     <div id="calendar"></div>
     
-    <table id="bookingTable">
+    <table id="bookingTable" style="display: none;">
       <thead>
         <tr>
           <th>Name</th>
@@ -70,8 +68,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data will be inserted here dynamically -->
-      </tbody>
+         </tbody>
     </table>
 
     <!-- Modal structure -->
@@ -102,10 +99,12 @@
 
             // Populate modal with event details
             modalDetails.innerHTML = `
-              <strong>Name:</strong> ${info.event.title.split(" - ")[0]}<br>
-              <strong>Guests:</strong> ${info.event.title.split(" - ")[1]}<br>
-              <strong>Date:</strong> ${info.event.start.toLocaleDateString()}<br>
-              <strong>Description:</strong> ${info.event.extendedProps.description}
+              <strong>Name:</strong> ${info.event.title.split(" - ")[0]}<br><br>
+              <strong>Date:</strong> ${info.event.start.toLocaleDateString()}<br><br>
+              <strong>Time:</strong> ${info.event.extendedProps.description.split(" - ")[0]}<br><br>
+              <strong>Guests:</strong> ${info.event.extendedProps.description.split(" - ")[1]}<br><br>
+              <strong>Email:</strong> ${info.event.extendedProps.description.split(" - ")[2]}<br><br>
+              <strong>Phone:</strong> ${info.event.extendedProps.description.split(" - ")[3]}<br><br>
             `;
             
             modal.style.display = "block";  // Show modal
@@ -129,62 +128,74 @@
         // Fetch data immediately when the page loads
         fetchBookingData(calendar);
       });
-
-      // Function to fetch booking data and populate the table and calendar
       function fetchBookingData(calendar) {
-        fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();  // Return JSON data
-          })
-          .then(data => {
-            try {
-              if (!data || data.length === 0) {
-                console.log("No data available");
+    fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();  // Return JSON data
+    })
+    .then(data => {
+        const calendarEvents = [];
+        data.forEach(detail => {
+            console.log('Raw Date:', detail.date, 'Raw Time:', detail.time);
+
+            // Ensure both date and time are valid
+            if (!detail.date || !detail.time) {
+                console.error('Invalid date or time value:', detail);
                 return;
-              }
-
-              const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
-              tableBody.innerHTML = '';  // Clear the table before adding new data
-
-              // Prepare an array to store calendar events
-              const calendarEvents = [];
-
-              data.forEach(detail => {
-                // Add row to the table
-                const row = tableBody.insertRow();
-                row.insertCell(0).innerText = detail.name;
-                row.insertCell(1).innerText = detail.email;
-                row.insertCell(2).innerText = detail.phone;
-                row.insertCell(3).innerText = detail.date;
-                row.insertCell(4).innerText = detail.time;
-                row.insertCell(5).innerText = detail.guests;
-
-                // Add event to the calendar
-                const event = {
-                  title: `${detail.name} - ${detail.guests} guests`,
-                  start: `${detail.date}`,  // FullCalendar expects a valid date format
-                  description: `Time: ${detail.time}, Guests: ${detail.guests}`,
-                  allDay: true  // Assuming bookings are full-day events; adjust as needed
-                };
-                calendarEvents.push(event);
-              });
-
-              // Add events to the calendar
-              calendar.removeAllEvents();  // Clear old events
-              calendar.addEventSource(calendarEvents);  // Add new events
-
-            } catch (e) {
-              console.error('Error parsing JSON:', e);
             }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            alert('Error loading data. Please check the console for details.');
-          });
-      }
+
+            // Ensure time format is correct
+            const formattedTime = detail.time.match(/^\d{1,2}:\d{2} (AM|PM)$/i) ? 
+                                  convertTime12to24(detail.time) : 
+                                  detail.time; // Convert to 24-hour if in 12-hour format
+
+            // Combine date and time into a valid Date object
+            const startDateTime = new Date(`${detail.date}T${formattedTime}`);
+            
+            // Log for debugging
+            console.log('Formatted DateTime:', startDateTime);
+
+            // Check if the startDateTime is valid
+            if (isNaN(startDateTime.getTime())) {
+                console.error('Invalid startDateTime:', startDateTime);
+                return;
+            }
+ 
+            // Add event to the calendar
+            calendarEvents.push({
+                title: `${detail.name}`,
+                start: startDateTime.toISOString(),
+                description: `${formattedTime} - ${detail.guests} - ${detail.email} - ${detail.phone}`,
+                allDay: false
+            });
+        });
+
+        // Add events to the calendar
+        calendar.removeAllEvents();
+        calendar.addEventSource(calendarEvents);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Error loading data. Please check the console for details.');
+    });
+}
+
+// Helper function to convert 12-hour time to 24-hour format
+function convertTime12to24(time12h) {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (hours === '12') {
+        hours = '00';
+    }
+    if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+    }
+    return `${hours}:${minutes}`;
+}
+
     </script>
   </body>
 </html>
