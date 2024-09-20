@@ -28,3 +28,97 @@ tr:nth-child(even) {
   margin-bottom: 20px;
   text-align: center;
 }
+/* Calendar styling */
+#calendar {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 10px;
+}
+
+/* Modal styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: linear-gradient(135deg, #0084FF, #FF2D55);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #FF2D55,  #0084FF);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid linear-gradient(135deg, #FF2D55,  #0084FF);
+  width: 80%;
+  max-width: 600px;
+}
+
+.close {
+  color: #000000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  #calendar {
+    max-width: 100%;  /* Make calendar take full width on small screens */
+    margin: 20px auto;
+    padding: 0 5px;
+  }
+
+  .modal-content {
+    width: 90%; /* Make modal smaller on small screens */
+    max-width: 400px;
+  }
+
+  .close {
+    font-size: 24px; /* Make close button smaller */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modal-content {
+    width: 95%; /* Make modal take nearly full width on very small screens */
+    max-width: 350px;
+  }
+
+  .close {
+    font-size: 22px; /* Further reduce close button size */
+  }
+
+  /* Adjust the calendar navigation buttons */
+  .fc-button-group .fc-button {
+    font-size: 14px;
+    padding: 4px 6px;
+  }
+}
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  th, td {
+    padding: 8px; /* Reduce padding for smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  table, th, td {
+    font-size: 14px; /* Reduce font size for very small screens */
+  }
+
+  .header {
+    font-size: 20px; /* Reduce header font size on small screens */
+  }
+}
