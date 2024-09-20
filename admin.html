@@ -17,8 +17,7 @@
           <th>Date</th>
           <th>Time</th>
           <th>Guests</th>
-          <th>Submitted At</th>
-        </tr>
+         </tr>
       </thead>
       <tbody>
         <!-- Data will be inserted here dynamically -->
@@ -56,8 +55,7 @@
                 row.insertCell(3).innerText = detail.date;
                 row.insertCell(4).innerText = detail.time;
                 row.insertCell(5).innerText = detail.guests;
-                row.insertCell(6).innerText = detail.currentDateTime;
-              });
+               });
             } catch (e) {
               console.error('Error parsing JSON:', e);
               console.log('Raw response:', data);  // Log the raw response for debugging
