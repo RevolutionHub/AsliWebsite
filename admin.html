@@ -37,8 +37,6 @@
       </tbody>
     </table>
 
-    <button onclick="fetchBookingData()">Load Data</button>
-
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Initialize the calendar
@@ -54,12 +52,12 @@
         });
         calendar.render();
         
-        // Expose calendar as a global variable for use in fetchBookingData()
-        window.calendar = calendar;
+        // Fetch data immediately when the page loads
+        fetchBookingData(calendar);
       });
 
-      // Moved fetchBookingData outside to make it accessible globally
-      function fetchBookingData() {
+      // Function to fetch booking data and populate the table and calendar
+      function fetchBookingData(calendar) {
         fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
           .then(response => {
             if (!response.ok) {
