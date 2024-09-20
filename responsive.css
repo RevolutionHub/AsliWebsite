@@ -190,6 +190,9 @@ display: block;
   .event-section{
 display: block;
   }
+  .booktable-section{
+    display: flex;
+  }
   .menu-container h2{
     text-align: center;
   }
