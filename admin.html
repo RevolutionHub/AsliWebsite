@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <link rel="stylesheet" href="admin.css">
+    <style>
+      /* Add your existing styles */
+      
+      /* Calendar styling */
+      #calendar {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 10px;
+      }
+    </style>
   </head>
   <body>
     <div class="header">Admin Booking Dashboard</div>
+    
+    <!-- Calendar container -->
+    <div id="calendar"></div>
+    
     <table id="bookingTable">
       <thead>
         <tr>
@@ -17,7 +30,7 @@
           <th>Date</th>
           <th>Time</th>
           <th>Guests</th>
-         </tr>
+        </tr>
       </thead>
       <tbody>
         <!-- Data will be inserted here dynamically -->
@@ -27,45 +40,75 @@
     <button onclick="fetchBookingData()">Load Data</button>
 
     <script>
-      function fetchBookingData() {
-        fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
-          .then(response => {
-            // Check if the response is OK (status code 200-299)
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();  // Use text for debugging, to see the exact response
-          })
-          .then(data => {
-            try {
-              const jsonData = JSON.parse(data);  // Parse the JSON
-              
-              if (!jsonData || jsonData.length === 0) {
-                console.log("No data available");
-                return;
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the calendar
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          events: []  // Events will be populated dynamically
+        });
+        calendar.render();
+
+        function fetchBookingData() {
+          fetch('https://script.google.com/macros/s/AKfycbyvzqGoKLlKVoPQQkXIuLJH14t99Hm5VZjHjIB4z_yL52G3aEWw4pZ4QmYt00_8KgY/exec')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
               }
-              
-              const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
-              tableBody.innerHTML = '';  // Clear the table before adding new data
-              jsonData.forEach(detail => {
-                const row = tableBody.insertRow();
-                row.insertCell(0).innerText = detail.name;
-                row.insertCell(1).innerText = detail.email;
-                row.insertCell(2).innerText = detail.phone;
-                row.insertCell(3).innerText = detail.date;
-                row.insertCell(4).innerText = detail.time;
-                row.insertCell(5).innerText = detail.guests;
-               });
-            } catch (e) {
-              console.error('Error parsing JSON:', e);
-              console.log('Raw response:', data);  // Log the raw response for debugging
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            alert('Error loading data. Please check the console for details.');
-          });
-      }
+              return response.json();  // Return JSON data
+            })
+            .then(data => {
+              try {
+                if (!data || data.length === 0) {
+                  console.log("No data available");
+                  return;
+                }
+
+                const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';  // Clear the table before adding new data
+
+                // Prepare an array to store calendar events
+                const calendarEvents = [];
+
+                data.forEach(detail => {
+                  // Add row to the table
+                  const row = tableBody.insertRow();
+                  row.insertCell(0).innerText = detail.name;
+                  row.insertCell(1).innerText = detail.email;
+                  row.insertCell(2).innerText = detail.phone;
+                  row.insertCell(3).innerText = detail.date;
+                  row.insertCell(4).innerText = detail.time;
+                  row.insertCell(5).innerText = detail.guests;
+
+                  // Add event to the calendar
+                  const event = {
+                    title: `${detail.name} - ${detail.guests} guests`,
+                    start: `${detail.date}`, // FullCalendar expects a valid date format
+                    description: `Time: ${detail.time}, Guests: ${detail.guests}`,
+                    allDay: true  // Assuming bookings are full-day events; adjust as needed
+                  };
+                  calendarEvents.push(event);
+                });
+
+                // Add events to the calendar
+                calendar.removeAllEvents();  // Clear old events
+                calendar.addEventSource(calendarEvents);  // Add new events
+
+              } catch (e) {
+                console.error('Error parsing JSON:', e);
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+              alert('Error loading data. Please check the console for details.');
+            });
+        }
+      });
     </script>
   </body>
 </html>
