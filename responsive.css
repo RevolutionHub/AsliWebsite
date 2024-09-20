@@ -53,9 +53,7 @@
       font-size: 1.8rem; /* Reduce subheading size */
     }
 
-    .event-section{
-     display: block;
-    }
+   
   
     .about-content p, .service p {
       font-size: 1.2rem; /* Smaller paragraph text */
@@ -183,6 +181,9 @@
   }
   .bg-hideshowdesktop{
     display: none;
+  }
+  .upcoming-event-section{
+display: block;
   }
 }
   
