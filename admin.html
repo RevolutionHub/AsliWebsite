@@ -6,7 +6,10 @@
     </style>
     <script>
       function fetchBookingData() {
-        fetch('https://script.google.com/macros/s/AKfycbxqYDuIl-9aFJXJmq0QzshgDrSEg5h9_ghFvA2BpD8t4U39bvY0UkkoS1zE7eU5aFTy/exec')  // Replace with your deployed Web App URL
+        fetch('https://script.google.com/macros/s/AKfycbxqYDuIl-9aFJXJmq0QzshgDrSEg5h9_ghFvA2BpD8t4U39bvY0UkkoS1zE7eU5aFTy/exec', {
+          method: 'GET',
+          mode: 'no-cors',  // This prevents CORS issues but limits response visibility
+        })  // Replace with your deployed Web App URL
           .then(response => response.json())
           .then(data => {
             const tableBody = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
