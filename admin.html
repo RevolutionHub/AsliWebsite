@@ -13,6 +13,43 @@
         margin: 40px auto;
         padding: 0 10px;
       }
+
+      /* Modal styles */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -37,6 +74,15 @@
       </tbody>
     </table>
 
+    <!-- Modal structure -->
+    <div id="bookingModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Booking Details</h2>
+        <p id="modalDetails"></p>
+      </div>
+    </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Initialize the calendar
@@ -48,7 +94,35 @@
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           },
-          events: []  // Events will be populated dynamically
+          events: [],  // Events will be populated dynamically
+          eventClick: function(info) {
+            // On click of calendar event, show the modal with booking information
+            var modal = document.getElementById("bookingModal");
+            var modalDetails = document.getElementById("modalDetails");
+
+            // Populate modal with event details
+            modalDetails.innerHTML = `
+              <strong>Name:</strong> ${info.event.title.split(" - ")[0]}<br>
+              <strong>Guests:</strong> ${info.event.title.split(" - ")[1]}<br>
+              <strong>Date:</strong> ${info.event.start.toLocaleDateString()}<br>
+              <strong>Description:</strong> ${info.event.extendedProps.description}
+            `;
+            
+            modal.style.display = "block";  // Show modal
+
+            // Close the modal when the 'x' is clicked
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+              modal.style.display = "none";
+            };
+
+            // Close the modal when clicking anywhere outside of the modal
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            };
+          }
         });
         calendar.render();
         
@@ -91,7 +165,7 @@
                 // Add event to the calendar
                 const event = {
                   title: `${detail.name} - ${detail.guests} guests`,
-                  start: `${detail.date}`, // FullCalendar expects a valid date format
+                  start: `${detail.date}`,  // FullCalendar expects a valid date format
                   description: `Time: ${detail.time}, Guests: ${detail.guests}`,
                   allDay: true  // Assuming bookings are full-day events; adjust as needed
                 };
