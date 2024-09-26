@@ -97,9 +97,7 @@
       text-align: center;
     }
   
-    .onlyheight {
-      height: 100vh !important;
-    }
+    
     
     .service img {
       object-fit: fill;
