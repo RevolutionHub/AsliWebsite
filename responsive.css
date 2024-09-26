@@ -2,6 +2,10 @@
 
 /* Mobile screens (max-width: 768px) */
 @media (max-width: 768px) {
+
+.onlyheight {
+    height: 120vh !important;
+}
     .header-hero-container {
       height: 100vh;
     }
